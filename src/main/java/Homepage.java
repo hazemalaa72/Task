@@ -10,7 +10,6 @@ public class Homepage {
 
 
     }
-    //use page factory
 
     public WebElement searchEle(){
 
@@ -27,6 +26,7 @@ public class Homepage {
         return  driver.findElement(By.cssSelector("a[href=\"/gp/goldbox?ref_=nav_cs_gb\"]"));
 
     }
+
 
 
 

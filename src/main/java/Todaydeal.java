@@ -33,7 +33,7 @@ public class Todaydeal {
     }
     public WebElement AnyitemEle(){
 
-        return  driver.findElement(By.cssSelector("img[data-a-hires=\"https://m.media-amazon.com/images/I/51jarWBeXkL._AC_UF452,452_FMjpg_.jpg\"]"));
+        return  driver.findElement(By.cssSelector("img[src=\"https://m.media-amazon.com/images/I/31kb4LqtQ8L._AC_UF226,226_FMjpg_.jpg\"]"));
 
     }
 
