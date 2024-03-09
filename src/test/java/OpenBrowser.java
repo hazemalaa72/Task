@@ -1,15 +1,11 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.asserts.SoftAssert;
-
-import java.security.Key;
 
 public class OpenBrowser {
 
@@ -23,41 +19,75 @@ public class OpenBrowser {
 
 
     WebDriver driver =null;
-    LoginPage login;
+    Homepage homepage;
+    Item item;
+    Mycart mycart;
+    Searcheditems searcheditems;
+    Todaydeal todaydeal;
+    SoftAssert soft;
     @BeforeTest
     public void OpenBrowser() throws InterruptedException {
 
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\Hazem Alaa Mostafa\\IdeaProjects\\Learning\\src\\Browsers\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","C:\\Users\\Hazem Alaa Mostafa\\IdeaProjects\\Task1\\src\\Browsers\\chromedriver.exe");
         driver =new ChromeDriver();
-        driver.navigate().to("https://the-internet.herokuapp.com/login");
-        login =new LoginPage(driver);
+        driver.navigate().to("https://www.amazon.com/");
+        driver.manage().window().maximize();
+        homepage =new Homepage(driver);
+        item =new Item(driver);
+        mycart=new Mycart(driver);
+        searcheditems=new Searcheditems(driver);
+        todaydeal=new Todaydeal(driver);
+        soft=new SoftAssert();
 
-        Thread.sleep(3000);
+
 
     }
 
     @Test
-    public void ValidData(){
-        driver.navigate().to("https://the-internet.herokuapp.com/login");
-        login.LoginSteps("tomsmith","SuperSecretPassword!");
-        String expectedvalue= "You logged into a secure area!";
-        String actualvalue= driver.findElement(login.flashEle()).getText();
-        SoftAssert soft=new SoftAssert();
-        soft.assertTrue(actualvalue.contains(expectedvalue),"first Assertion");
-        soft.assertTrue(driver.findElement(login.cssSelectorEle()).isDisplayed(),"second Assertion");
-        soft.assertEquals(driver.getCurrentUrl(),"https://the-internet.herokuapp.com/secure","third Assertion");
-        soft.assertAll();
+    public void ValidScenario1() throws InterruptedException {
+        Thread.sleep(20000);
+       homepage.searchEle().sendKeys("car accessories");
+        homepage.searchEle().sendKeys(Keys.ENTER);
+        searcheditems.itemEle().click();
+        item.AddtoCartEle().click();
+        homepage.MycartEle().click();
+       String acyualvalue= mycart.itemEle().getText();
+       String expectedvalue="FORTEM Car Trunk Organizer, Collapsible Multi Compartment Car Organizer, Foldable SUV Storage for Car Accessories for Women Men, Non Slip Bottom, Securing Straps, Cover 50L (Blue, Standard)";
+        soft.assertTrue(acyualvalue.contains(expectedvalue),"Scenario 1 Assertion");
+
+
+
+
+
+
+
     }
     @Test
-    public void InvalidData(){
-        driver.navigate().to("https://the-internet.herokuapp.com/login");
-        login.LoginSteps("invalid","invald");
+    public void validScenario2() throws InterruptedException {
+        Thread.sleep(20000);
+        homepage.todaydealEle().click();
+        todaydeal.HeadohoneEle().click();
+        todaydeal.GroceryEle().click();
+        todaydeal.DiscountEle().click();
+        Thread.sleep(6000);
+        todaydeal.LastpageEle().click();
+        Thread.sleep(6000);
+        todaydeal.AnyitemEle().click();
+        item.AddtoCartEle().click();
+        String acyualvalue= driver.getCurrentUrl();
+        String expectedvalue="  https://www.amazon.com/BMHOLU-Bluetooth-Charging-Waterproof-Playtime/dp/B0CNM3S9JH?pf_rd_r=HZZDQ5774RYT020MHG2Y&pf_rd_t=Events&pf_rd_i=deals&pf_rd_p=2c03f004-e5df-4113-b2c9-145f7add211d&pf_rd_s=slot-14&ref=dlx_deals_gd_dcl_img_8_96e7d31b_dt_sl14_1d";
+        soft.assertTrue(acyualvalue.contains(expectedvalue),"Scenario 2 Assertion");
+
+
+
+
+
          
 
     }
     @AfterTest
     public void CloseBrowser() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(6000);
         driver.quit();
 
     }
